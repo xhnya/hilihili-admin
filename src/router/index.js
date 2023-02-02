@@ -54,7 +54,21 @@ export const constantRoutes = [
       meta: { title: 'Dashboard', icon: 'dashboard' }
     }]
   },
-
+  {
+    path: '/system',
+    component: Layout,
+    redirect: '',
+    name: 'system',
+    meta: { title: '系统管理',icon: 'el-icon-s-tools'},
+    children: [
+      {
+        path: 'page-images',
+        name: 'PageImagesAdmin',
+        component: ()=> import('@/views/system/page-images-admin/index'),
+        meta: {title: '页面图片管理',icon: 'el-icon-s-marketing'}
+      }
+    ]
+  },
   {
     path: '/example',
     component: Layout,
