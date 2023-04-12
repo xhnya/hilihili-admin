@@ -55,6 +55,7 @@ export const constantRoutes = [
     }]
   },
   {
+    //系统管理
     path: '/system',
     component: Layout,
     redirect: '',
@@ -65,7 +66,7 @@ export const constantRoutes = [
         path: 'page-images',
         name: 'PageImagesAdmin',
         component: ()=> import('@/views/system/page-images-admin/index'),
-        meta: {title: '页面图片管理',icon: 'el-icon-s-marketing'}
+        meta: {title: '门户管理',icon: 'el-icon-s-marketing'}
       }
     ]
   },
