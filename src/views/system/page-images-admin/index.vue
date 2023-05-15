@@ -37,12 +37,24 @@
                 <el-button @click="getPageImageList(10001)" type="primary" icon="el-icon-search">搜索</el-button>
               </el-col>
               <el-col :span="6">
+                <!--      预览-->
+                <el-button icon="el-icon-view"  @click="dialogRotationChartCat = true"  style="margin-right: 20px;" type="primary">预览</el-button>
                 <!--      增加-->
                 <el-button icon="el-icon-plus"  @click="dialogRotationChart = true"  style="margin: auto;" type="primary">增加</el-button>
               </el-col>
             </el-row>
 
-
+            <!--      预览-->
+            <el-dialog title="轮播图预览" :visible.sync="dialogRotationChartCat">
+              <el-carousel height="500px">
+                <el-carousel-item v-for="item in rotationChartList" :key="item.id">
+                  <el-image
+                    style="width: 100%; height: 100%"
+                    :src="item.imageUrl "
+                    fit="fill"></el-image>
+                </el-carousel-item>
+              </el-carousel>
+            </el-dialog>
             <!--      显示-->
             <el-table
               :data="rotationChartList"
@@ -61,18 +73,43 @@
               <el-table-column
                 label="图片">
                 <template slot-scope="scope">
-                  <el-popover trigger="hover" placement="top">
-                    <p>姓名: {{ scope.row.name }}</p>
-                    <p>住址: {{ scope.row.address }}</p>
-                    <div slot="reference" class="name-wrapper">
-                      <el-tag size="medium">{{ scope.row.name }}</el-tag>
-                    </div>
-                  </el-popover>
+                 <div style="text-align: center">
+                   <el-popover
+                     placement="top-start"
+                     width="400"
+                     trigger="click">
+                     <div>
+                       <el-image
+                         style="width: 100%; height: 100%"
+                         :src="scope.row.imageUrl "
+                         fit="fill"></el-image>
+                     </div>
+                     <el-button slot="reference">查看图片</el-button>
+                   </el-popover>
+                 </div>
                 </template>
               </el-table-column>
               <el-table-column
-                prop="showStatus"
                 label="状态">
+                <template slot-scope="scope">
+                  <div style="text-align: center">
+                    <div v-if="scope.row.showStatus==1">
+                      <el-tag
+                        effect="dark">
+                        显示
+                      </el-tag>
+                    </div>
+                    <div v-else>
+                      <el-tag
+                        effect="danger">
+                        不显示
+                      </el-tag>
+                    </div>
+
+                  </div>
+                  <div>
+                  </div>
+                </template>
               </el-table-column>
               <el-table-column
                 prop="sort"
@@ -96,6 +133,7 @@
                 </template>
               </el-table-column>
             </el-table>
+            <!--      分页-->
             <el-pagination
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
@@ -168,7 +206,7 @@ export default {
       dialogRotationChart: false,
       rotationChartForm: {
         des: '',
-        showStatus: 0,
+        showStatus: 1,
         sort: 1,
         imageUrl: '',
         type: 10001
@@ -186,9 +224,10 @@ export default {
         }
       ],
       loading: false,
-      isShowValue: '',
+      isShowValue: '启用',
       desSearchRes: [],
-      rotationChartList: []
+      rotationChartList: [],
+      dialogRotationChartCat: false
     }
   },
   created() {
@@ -214,10 +253,13 @@ export default {
       param.currentPage=this.queryParam.currentPage
       param.size=this.queryParam.size
       param.type=type
-      param.showStatus=this.isShow==='启用'?1:0
+
+      if (this.isShowValue==='启用')param.showStatus=1
+      else param.showStatus=this.isShowValue
       req.getPageImagesList(param).then((res)=>{
         console.log(res)
         this.rotationChartList=res.data.data.data
+        console.log(this.rotationChartList)
         this.queryParam.currentPage=res.data.data.currPage
         this.queryParam.total=res.data.data.totalCount
       })
@@ -249,7 +291,9 @@ export default {
         });
         this.rotationChartForm={}
       })
+      this.getPageImageList(10001)
       this.dialogRotationChart = false
+
     },
     openRotationChart(){
 
