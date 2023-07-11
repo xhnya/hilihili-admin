@@ -5,7 +5,11 @@ import type { CSSProperties, Plugin } from 'vue';
 type OptionalKeys<T extends Record<string, unknown>> = {
   [K in keyof T]: T extends Record<K, T[K]> ? never : K;
 }[keyof T];
-
+export interface Result<T = any> {
+  code: number;
+  message: string;
+  data: T;
+}
 type RequiredKeys<T extends Record<string, unknown>> = Exclude<keyof T, OptionalKeys<T>>;
 
 type MonoArgEmitter<T, Keys extends keyof T> = <K extends Keys>(evt: K, arg?: T[K]) => void;
