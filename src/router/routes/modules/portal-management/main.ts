@@ -1,6 +1,6 @@
-import type {AppRouteModule} from '/@/router/types';
+import type { AppRouteModule } from '/@/router/types';
 
-import {LAYOUT} from '/@/router/constant';
+import { LAYOUT } from '/@/router/constant';
 
 const permission: AppRouteModule = {
   path: '/portal-management',
@@ -18,7 +18,7 @@ const permission: AppRouteModule = {
       meta: {
         title: '轮播图管理',
       },
-      component: () => import('/@/views/portal-management/index.vue'),
+      component: () => import('/@/views/portal-management/rotation-chart/index.vue'),
     },
   ],
 };
