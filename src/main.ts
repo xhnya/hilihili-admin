@@ -5,6 +5,7 @@ import 'ant-design-vue/dist/antd.less';
 // Register icon sprite
 import 'virtual:svg-icons-register';
 
+
 import { createApp } from 'vue';
 
 import { registerGlobComp } from '@/components/registerGlobComp';

@@ -1,83 +1,72 @@
 <template>
   <div>
-    <!--    用户管理-->
-    <a-card style="margin-left: 10px">
-      <a-table :columns="columns" :data-source="data">
-        <template #headerCell="{ column }">
-          <template v-if="column.key === 'name'">
-        <span>
-          <smile-outlined />
-          Name
-        </span>
-          </template>
-        </template>
-
-        <template #bodyCell="{ column, record }">
-          <template v-if="column.key === 'name'">
-            <a>
-              {{ record.name }}
-            </a>
-          </template>
-          <template v-else-if="column.key === 'tags'">
-        <span>
-          <a-tag
-            v-for="tag in record.tags"
-            :key="tag"
-            :color="tag === 'loser' ? 'volcano' : tag.length > 5 ? 'geekblue' : 'green'"
-          >
-            {{ tag.toUpperCase() }}
-          </a-tag>
-        </span>
-          </template>
-          <template v-else-if="column.key === 'action'">
-        <span>
-          <a>Invite 一 {{ record.name }}</a>
-          <a-divider type="vertical" />
-          <a>Delete</a>
-          <a-divider type="vertical" />
-          <a class="ant-dropdown-link">
-            More actions
-            <down-outlined />
+    <a-card style="width: 100%">
+      <p>Card content</p>
+      <p>Card content</p>
+      <p>Card content</p>
+    </a-card>
+    <a-card style="width: 100%">
+      <a-carousel arrows dots-class="slick-dots slick-thumb">
+        <template #customPaging="props">
+          <a>
+            <img :src="getImgUrl(props.i)"  alt=""/>
           </a>
-        </span>
-          </template>
         </template>
-      </a-table>
+        <div v-for="item in 4" :key="item">
+          <img :src="getImgUrl(item - 1)"  alt=""/>
+        </div>
+      </a-carousel>
     </a-card>
   </div>
 </template>
 <script setup lang="ts">
+import { rotationChartListApi } from "@/api/portal-management/portal";
 
+const baseUrl =
+  'https://raw.githubusercontent.com/vueComponent/ant-design-vue/main/components/carousel/demo/';
 
-const columns = [
-  {
-    name: 'Name',
-    dataIndex: 'name',
-    key: 'name',
-  },
-  {
-    title: 'Age',
-    dataIndex: 'age',
-    key: 'age',
-  },
-  {
-    title: 'Address',
-    dataIndex: 'address',
-    key: 'address',
-  },
-  {
-    title: 'Tags',
-    key: 'tags',
-    dataIndex: 'tags',
-  },
-  {
-    title: 'Action',
-    key: 'action',
-  },
-];
-
-
+const getImgUrl = (i: number) => {
+  const params: any ={
+    type: 1,
+  }
+  rotationChartListApi(params).then((res) => {
+    console.log(res);
+  }).catch((err) => {
+    console.log(err);
+  });
+  return `${baseUrl}abstract0${i + 1}.jpg`;
+};
 </script>
-<style scoped lang="less">
-
+<style scoped>
+/* For demo */
+.ant-carousel :deep(.slick-dots) {
+  position: relative;
+  height: auto;
+}
+.ant-carousel :deep(.slick-slide img) {
+  border: 5px solid #fff;
+  display: block;
+  margin: auto;
+  max-width: 80%;
+}
+.ant-carousel :deep(.slick-arrow) {
+  display: none !important;
+}
+.ant-carousel :deep(.slick-thumb) {
+  bottom: 0px;
+}
+.ant-carousel :deep(.slick-thumb li) {
+  width: 60px;
+  height: 45px;
+}
+.ant-carousel :deep(.slick-thumb li img) {
+  width: 100%;
+  height: 100%;
+  filter: grayscale(100%);
+  display: block;
+}
+.ant-carousel :deep .slick-thumb li.slick-active img {
+  filter: grayscale(0%);
+}
 </style>
+
